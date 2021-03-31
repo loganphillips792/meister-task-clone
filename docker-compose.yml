@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+    frontend:
+        container_name: 'frontend_container'
+        # Location of Dockerfile
+        build: ./frontend
+        stdin_open: true
+        ports:
+            - "3000:3000"
+        depends_on:
+            - django
+        networks:
+            - nginx_network
+        # Need these two for hot reloading (CHOKIDAR, node-modules volume)
+        environment: 
+            - CHOKIDAR_USEPOLLING=true
+        volumes:
+            # - ./meistertaskclone/node_modules:/app/frontend/node_modules
+            # If you don't copy all the files over in the Dockerfile, then we will need to create a volume
+            - ./frontend/meistertaskclone:/app/frontend
+    django:
+        container_name: 'django_container'
+        build: ./backend
+        command: gunicorn --access-logfile "-" --error-logfile "-" --capture-output --workers 3 --worker-class=gevent --timeout=300 --bind :8000 meistertaskclone.wsgi:application
+        depends_on:
+            - db
+        volumes:
+            - ./backend/info.log:/app/Backend/info.log
+            - ./backend/debug.log:/app/Backend/debug.log
+        networks:
+            - nginx_network
+            - db_network
+  
+    nginx:
+        container_name: 'nginx_container'
+        image: nginx:latest
+        ports: 
+            - 8000:80 # we want to access our app at 127.0.0.1:8000, and we want NginX to listen on port 80 in the container. In a production environment, we would use 80:80 instead
+        depends_on:
+            - django
+        volumes:
+            - ./backend/config/nginx/conf.d:/etc/nginx/conf.d
+        networks:
+            - nginx_network
+    db:
+        container_name: 'database_container'
+        image: postgres:latest
+        env_file:
+            - backend/config/.env
+        networks:
+            - db_network
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        # uncomment if you want to be able to access database from host (such as connecting to the database via DBeaver)
+        ports:
+            - 5432:5432
+networks:
+    nginx_network:
+        driver: bridge
+    db_network:
+        driver: bridge
+
+volumes:
+    postgres_data:
