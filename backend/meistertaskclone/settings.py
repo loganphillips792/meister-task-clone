@@ -33,15 +33,12 @@ DEBUG = env.bool('DEBUG_MODE')
 SESSION_COOKIE_AGE = 1209600
 
 if DEBUG is True:
-    ALLOWED_HOSTS=['*']
+    # ALLOWED_HOSTS=['*']
+    # CORS_ORIGIN_ALLOW_ALL = True
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+    SESSION_COOKIE_SECURE = False
     CORS_ORIGIN_ALLOW_ALL = True
-    # ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-    # SESSION_COOKIE_SECURE = False
-    # CORS_ORIGIN_ALLOW_ALL = False
-    # CORS_ORIGIN_WHITELIST = (
-    #     'localhost'
-    # )
-    # CORS_ALLOW_CREDENTIALS = True
+    CORS_ALLOW_CREDENTIALS = True
 else:
     ALLOWED_HOSTS = ['api.vrware.tech', '18.223.129.197']
     CSRF_TRUSTED_ORIGINS = ['vrware.tech', 'www.vrware.tech']
@@ -65,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'users', 
+    'profile',
     'tasks',
 ]
 
@@ -148,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
