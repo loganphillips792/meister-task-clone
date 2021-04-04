@@ -7,6 +7,7 @@ import { faHome, faIcons } from '@fortawesome/free-solid-svg-icons';
 import Rocket from '../../images/rocket.png';
 import ProjectPopover from './ProjectPopover.js';
 import { InfoCircle } from '@styled-icons/bootstrap/InfoCircle';
+import { PlusCircle } from '@styled-icons/bootstrap/PlusCircle';
 
 const Container = styled.div`
 `;
@@ -63,13 +64,6 @@ const ProjectPicker = styled.div`
     .project-name {}
 `;
 
-const ColumnTwo = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    border: 2px solid blue;
-`;
-
 const HomeIcon = styled(FontAwesomeIcon)`
     margin-left: 24px;
     margin-right: 24px;
@@ -80,11 +74,21 @@ const InfoIcon = styled(InfoCircle)`
     margin-right: 24px;
 `;
 
+const ColumnTwo = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border: 2px solid blue;
+`;
+
+const AddTaskIcon = styled(PlusCircle)``;
+
 const Toolbar = () => {
     const [referenceElement, setReferenceElement] = useState(null);
 
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
 
+    const iconsSize = "15px";
 
     return (
         <StyledToolbar>
@@ -105,11 +109,14 @@ const Toolbar = () => {
                     showProjectDropdown={showProjectDropdown}
                 />
 
-                <InfoIcon size="15px" />
+                <InfoIcon size={iconsSize} />
                 
             </ColumnOne>
             
             <ColumnTwo>
+            
+            <AddTaskIcon size={iconsSize} />
+
             </ColumnTwo>
         </StyledToolbar>
     );
