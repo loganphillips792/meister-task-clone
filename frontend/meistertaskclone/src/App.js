@@ -13,7 +13,6 @@ import {
 } from 'react-router-dom';
 
 const Container = styled.div`
-
 `;
 
 function App() {
