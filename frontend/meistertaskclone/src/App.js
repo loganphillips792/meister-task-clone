@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Home from './components/Home/index';
+import Project from './components/Project/project.js';
 
 import {
   BrowserRouter as Router,
@@ -12,7 +13,6 @@ import {
 } from 'react-router-dom';
 
 const Container = styled.div`
-
 `;
 
 function App() {
@@ -22,6 +22,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route exact path="/app/project/:slug">
+            <Project />
           </Route>
         </Switch>
       </Router>  
