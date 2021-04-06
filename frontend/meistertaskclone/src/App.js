@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Home from './components/Home/index';
 import Project from './components/Project/project.js';
+import Dashboard from './components/Dashboard/Dashboard.js';
 
 import {
   BrowserRouter as Router,
@@ -23,7 +24,10 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/app/project/:slug">
+          <Route path="/app/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="/app/project/:slug">
             <Project />
           </Route>
         </Switch>
