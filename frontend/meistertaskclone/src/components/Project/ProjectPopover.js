@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { API_URL } from '../../constants.js';
 import { usePopper } from 'react-popper';
@@ -31,10 +31,11 @@ const ProjectDropdown = styled.div`
 
 const CloseIcon = styled(CloseOutline)`
     margin-left: auto;
+    cursor: pointer;
 `;
 
 //  https://dev.to/tannerhallman/using-usepopper-to-create-a-practical-dropdown-5bf8 
-const ProjectPopover = ({ referenceElement, showProjectDropdown }) => {
+const ProjectPopover = ({ referenceElement, showProjectDropdown, closeProjectDropdown }) => {
 
     const [popperElement, setPopperElement] = useState(null);
     const [arrowElement, setArrowElement] = useState(null);
@@ -64,7 +65,7 @@ const ProjectPopover = ({ referenceElement, showProjectDropdown }) => {
                 <ProjectDropdown>
                     <div class="header-close-container">
                         <Text fontSize="xl">Projects</Text>
-                        <CloseIcon size="15px" />
+                        <CloseIcon size="15px" onClick={closeProjectDropdown} />
                     </div>
                     <InputGroup>
                         <InputLeftElement

@@ -9,8 +9,13 @@ import { Timeline } from '@styled-icons/fluentui-system-regular/Timeline';
 import { CheckCircle } from '@styled-icons/bootstrap/CheckCircle';
 import { Bell } from '@styled-icons/bootstrap/Bell';
 import { MagnifyingGlass } from '@styled-icons/entypo/MagnifyingGlass';
+import AddTaskModal from './AddTaskModal';
 
 const StyledToolbar = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     user-select: none;
     display: flex;
     align-items: center;
@@ -104,6 +109,8 @@ const Toolbar = () => {
 
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
 
+    const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+
     const iconsSize = "24px";
 
     return (
@@ -119,11 +126,12 @@ const Toolbar = () => {
                <ProjectPopover
                     referenceElement={referenceElement} 
                     showProjectDropdown={showProjectDropdown}
+                    closeProjectDropdown={() => setShowProjectDropdown(false)}
                 />
                 <InfoIcon size={iconsSize} />
             </ColumnOne>
             <ColumnTwo>
-                <AddTaskIcon size={iconsSize} />
+                <AddTaskIcon size={iconsSize} onClick={() => setShowAddTaskModal(true)} />
                 <VerticalLine />
                 <TimeLineIcon size={iconsSize} />
                 <VerticalLine />
@@ -135,6 +143,7 @@ const Toolbar = () => {
                     LP
                 </NameCircle>
             </ColumnTwo>
+            <AddTaskModal show={showAddTaskModal} />
         </StyledToolbar>
     );
 }

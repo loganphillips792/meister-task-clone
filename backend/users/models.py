@@ -11,7 +11,7 @@ class CustomUser(AbstractBaseUser):
     # By default, Django gives each model the following field
     # id = models.AutoField(primary_key=True)
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     username = models.CharField(
         max_length=150, 
