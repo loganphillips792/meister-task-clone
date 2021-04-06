@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { API_URL } from '../../constants.js';
 import { useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faIcons } from '@fortawesome/free-solid-svg-icons';
 import Rocket from '../../images/rocket.png';
 import ProjectPopover from './ProjectPopover.js';
+import { Home } from '@styled-icons/heroicons-outline/Home';
 import { InfoCircle } from '@styled-icons/bootstrap/InfoCircle';
 import { PlusCircle } from '@styled-icons/bootstrap/PlusCircle';
+import { Timeline } from '@styled-icons/fluentui-system-regular/Timeline';
+import { CheckCircle } from '@styled-icons/bootstrap/CheckCircle';
+import { Bell } from '@styled-icons/bootstrap/Bell';
+import { MagnifyingGlass } from '@styled-icons/entypo/MagnifyingGlass';
 
 const Container = styled.div`
 `;
-
 
 const Project = () => {
     let { slug } = useParams();
@@ -39,7 +41,6 @@ const ColumnOne = styled.div`
     justfiy-content: flex-
     align-items: center;
     flex-grow: 1;
-    border: 2px solid green;
 `;
 
 const VerticalLine = styled.div`
@@ -64,59 +65,91 @@ const ProjectPicker = styled.div`
     .project-name {}
 `;
 
-const HomeIcon = styled(FontAwesomeIcon)`
+const IconMargins = css`
     margin-left: 24px;
     margin-right: 24px;
 `;
 
+const HomeIcon = styled(Home)`
+    ${IconMargins}
+`;
+
 const InfoIcon = styled(InfoCircle)`
-    margin-left: 24px;
-    margin-right: 24px;
+    ${IconMargins}
 `;
 
 const ColumnTwo = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    border: 2px solid blue;
 `;
 
-const AddTaskIcon = styled(PlusCircle)``;
+const TimeLineIcon = styled(Timeline)`
+    ${IconMargins}
+`;
+
+const AddTaskIcon = styled(PlusCircle)`
+    ${IconMargins}
+`;
+
+const CheckCircleIcon = styled(CheckCircle)`
+    ${IconMargins}
+`;
+
+const BellIcon = styled(Bell)`
+    ${IconMargins}
+`;
+
+const MagnifyingGlassIcon = styled(MagnifyingGlass)`
+    ${IconMargins}
+`;
+
+const NameCircle = styled.p`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 50%;
+    color: #FFFFFF;
+    background-color: rgb(138, 148, 153);
+`;
 
 const Toolbar = () => {
     const [referenceElement, setReferenceElement] = useState(null);
 
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
 
-    const iconsSize = "15px";
+    const iconsSize = "24px";
 
     return (
         <StyledToolbar>
             <ColumnOne>
-                <HomeIcon icon={faHome} />
-                
+                <HomeIcon size={iconsSize} />
                 <VerticalLine />
-                
                 <ProjectPicker ref={setReferenceElement} onClick={() => setShowProjectDropdown(!showProjectDropdown)}>
                     <div class="project-image"></div>
                     <div class="project-name">VRware Webapp Development Team</div>
                 </ProjectPicker>
-                
                <VerticalLine />
-
                <ProjectPopover
                     referenceElement={referenceElement} 
                     showProjectDropdown={showProjectDropdown}
                 />
-
                 <InfoIcon size={iconsSize} />
-                
             </ColumnOne>
-            
             <ColumnTwo>
-            
-            <AddTaskIcon size={iconsSize} />
-
+                <AddTaskIcon size={iconsSize} />
+                <VerticalLine />
+                <TimeLineIcon size={iconsSize} />
+                <VerticalLine />
+                <CheckCircleIcon size={iconsSize} />
+                <BellIcon size={iconsSize} />
+                <VerticalLine />
+                <MagnifyingGlassIcon size={iconsSize} />
+                <NameCircle>
+                    LP
+                </NameCircle>
             </ColumnTwo>
         </StyledToolbar>
     );

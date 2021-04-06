@@ -5,14 +5,15 @@ import { usePopper } from 'react-popper';
 import { Text, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { MagnifyingGlass } from '@styled-icons/entypo/MagnifyingGlass';
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Container = styled.div`
     
     // This doesn't work. Need to offset due to positioning bug. Putting state to true positions correctly for some reason.
-    display: ${(props) => props.showProjectDropdown ? 'block' : 'none'};
+    //display: ${(props) => props.showProjectDropdown ? 'block' : 'none'};
 `;
 
-const StyledProjectPopover = styled.div`
+const StyledProjectPopover = styled(motion.div)`
     width: 320px;
     padding: 20px;
     background-color: #FFFFFF;    
@@ -50,14 +51,16 @@ const ProjectPopover = ({ referenceElement, showProjectDropdown }) => {
                 name: "offset",
                 enabled: true,
                 options: {
-                    offset: [-150, 10]
+                    offset: [0, 10]
                 }
             }],
     });
 
     return (
-        <Container showProjectDropdown={showProjectDropdown}>
-            <StyledProjectPopover ref={setPopperElement} style={styles.popper} {...attributes.popper}>
+        <Container ref={setPopperElement} style={styles.popper} {...attributes.popper}>
+          <AnimatePresence>
+           {showProjectDropdown && (
+                <StyledProjectPopover  key="modal" animate={{ scale: [0, 1] }} exit={{ scale: 0 }} transition={{ duration: 0.5 }}>
                 <ProjectDropdown>
                     <div class="header-close-container">
                         <Text fontSize="xl">Projects</Text>
@@ -76,6 +79,10 @@ const ProjectPopover = ({ referenceElement, showProjectDropdown }) => {
                 </ProjectDropdown>
                 <div ref={setArrowElement} style={styles.arrow} />
             </StyledProjectPopover>
+           )
+
+           }
+          </AnimatePresence>
         </Container>
     )
 }
