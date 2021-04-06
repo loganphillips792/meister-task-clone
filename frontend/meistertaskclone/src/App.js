@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Home from './components/Home/index';
 import Project from './components/Project/Project.js';
+import Toolbar from './components/Project/Toolbar.js';
 import Dashboard from './components/Dashboard/Dashboard.js';
 
 import {
@@ -28,6 +29,7 @@ function App() {
             <Dashboard />
           </Route>
           <Route path="/app/project/:slug">
+            <Toolbar />
             <Project />
           </Route>
         </Switch>
