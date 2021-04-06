@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Home from './components/Home/index';
-import Project from './components/Project/project.js';
+import Project from './components/Project/Project.js';
 import Dashboard from './components/Dashboard/Dashboard.js';
 
 import {
