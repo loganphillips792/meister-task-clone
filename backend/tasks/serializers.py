@@ -7,6 +7,10 @@ class SectionSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
 
+    def validate_color(self, value):
+        if value[0] != '#':
+            raise serializers.ValidationError("Color does not contain #")
+
     def create(self, validated_data):
         return Section.objects.create(**validated_data)
     
@@ -17,3 +21,47 @@ class SectionSerializer(serializers.Serializer):
         instance.updated_at = validated_data.get('updated_at', instance.updated_at)
         instance.save()
         return instance
+
+class TaskSerializer(serializers.Serializer):
+      # id is automatically created, so don't need to write it
+    id = serializers.IntegerField(source="pk", read_only=True)
+    name = serializers.CharField(max_length=1000, trim_whitespace=False)
+    section_id = serializers.IntegerField(write_only=True)
+    due = serializers.DateTimeField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)    
+    completed_at = serializers.DateTimeField(read_only=True)
+    section_id = serializers.IntegerField(source='assigned_to_id', read_only=True)
+
+    def create(self, validated_data):
+        return Task.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.content = validated_data.get('content', instance.content)
+        instance.save()
+
+    def validate(self, data):
+        print("valdiated data is")
+        print(data)
+        return data
+
+class NoteSerializer(serializers.Serializer):
+    # id is automatically created, so don't need to write it
+    id = serializers.IntegerField(source="pk", read_only=True)
+    audio_id = serializers.IntegerField(write_only=True)
+    id_of_task_note_belongs_to = serializers.IntegerField(source='task_id', read_only=True)
+    content = serializers.CharField(max_length=1000, trim_whitespace=True)
+    date_created = serializers.DateTimeField(read_only=True)
+    date_updated = serializers.DateTimeField(read_only=True)
+
+    def create(self, validated_data):
+        return Note.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.content = validated_data.get('content', instance.content)
+        instance.save()
+
+    def validate(self, data):
+        print("valdiated data is")
+        print(data)
+        return data
