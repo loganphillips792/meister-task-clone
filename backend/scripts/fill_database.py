@@ -36,11 +36,17 @@ class DataImport:
             num_of_tasks = random.randint(1, len(task_names))
             for x in range(num_of_tasks):
                 name = random.choice(task_names)
+                description = ""
+                if random.randint(0, 100) < 50:
+                    description = "This is a description for the task"
+                else:
+                    description = None
+                    
                 task_names.remove(name)
                 start_date = date.today()
                 end_date = date(start_date.year+1, start_date.month, start_date.day)
                 due_date = fake.date_between_dates(date_start=start_date, date_end=end_date).strftime('%Y-%m-%d')
-                task = Task(section_id=section.id, name=name, due=due_date)
+                task = Task(section_id=section.id, name=name, description=description, due=due_date)
                 task.save()
 
 data_import = DataImport()
