@@ -4,6 +4,7 @@ from profile.models import Profile
 
 class Section(models.Model):
     name = models.CharField(max_length=30)
+    description = models.CharField(max_length=300, null=True)
     color = models.CharField(max_length=7)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -14,6 +15,7 @@ class Section(models.Model):
 class Task(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=250)
+    description = models.CharField(max_length=1000, null=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     due = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
