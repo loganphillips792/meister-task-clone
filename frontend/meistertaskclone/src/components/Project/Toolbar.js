@@ -143,7 +143,7 @@ const Toolbar = () => {
                     LP
                 </NameCircle>
             </ColumnTwo>
-            <AddTaskModal show={showAddTaskModal} />
+            <AddTaskModal show={showAddTaskModal} closeProjectDropdown={() => setShowAddTaskModal(false)} />
         </StyledToolbar>
     );
 }
