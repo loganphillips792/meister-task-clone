@@ -25,7 +25,6 @@ const Section = styled.div`
     background-color: transparent;
     width: 320px;
     height: 100%;
-    cursor: grab;
 
     // Make every other <Section /> have different background color than the background
     &:nth-child(even) {
@@ -41,7 +40,8 @@ const SectionHeader = styled.div`
     padding-left: 22px;
     padding-right: 22px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-
+    cursor: grab;
+    
     .name {}
 
     .caret-task-count-container {
