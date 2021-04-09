@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Text, Input } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react"
+import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
 
 const Container = styled.div`
     display: ${(props) => props.show ? 'block' : 'none' };
@@ -22,9 +23,19 @@ const StyledAddTaskModal = styled.div`
     padding: 20px;
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
+
+    .header-close-container {
+        display: flex;
+        align-items: center;
+    }
 `;
 
-const AddTaskModal = ({ show }) => {
+const CloseIcon = styled(CloseOutline)`
+    margin-left: auto;
+    cursor: pointer;
+`;
+
+const AddTaskModal = ({ show, closeProjectDropdown }) => {
     const [value, setValue] = useState("");
 
     const handleChange = (event) => setValue(event.target.value);
@@ -32,7 +43,10 @@ const AddTaskModal = ({ show }) => {
     return (
         <Container show={show}>
             <StyledAddTaskModal>
-                <Text fontSize="xl">Add Task</Text>
+                <div class="header-close-container">
+                    <Text fontSize="xl">Add Task</Text>
+                    <CloseIcon size="15px" onClick={closeProjectDropdown} />
+                </div>
                 <Input
                     value={value}
                     onChange={handleChange}

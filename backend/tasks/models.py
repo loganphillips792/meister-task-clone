@@ -4,6 +4,7 @@ from profile.models import Profile
 
 class Section(models.Model):
     name = models.CharField(max_length=30)
+    # To save order of sections on UI, should we add a 'Sequence #' field?
     description = models.CharField(max_length=300, null=True)
     color = models.CharField(max_length=7)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,8 @@
 from rest_framework import serializers 
 from tasks.models import Section
+import logging
+
+logger = logging.getLogger(__name__)
 
 class TaskSerializer(serializers.Serializer):
     # id is automatically created, so don't need to write it
@@ -30,21 +33,24 @@ class TaskSerializer(serializers.Serializer):
         return data
 
 class SectionSerializer(serializers.Serializer):
+    id = serializers.IntegerField(source="pk", read_only=True)
     name = serializers.CharField(max_length=30)
-    color = serializers.CharField(max_length=6)
+    color = serializers.CharField(max_length=7)
     description = serializers.CharField(max_length=300, allow_null=True)
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
     task_set = TaskSerializer(read_only=True, many=True)
 
     def validate_color(self, value):
+        logger.info("Validating color field...")
         if value[0] != '#':
             raise serializers.ValidationError("Color does not contain #")
+        return value
 
     def create(self, validated_data):
         return Section.objects.create(**validated_data)
     
-    def update(self, validated_data):
+    def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
         instance.color = validated_data.get('color', instance.color)
         instance.description = validated_data.get('description', instance.description)

@@ -137,7 +137,9 @@ const Project = () => {
     const [showCaret, setShowCaret] = useState(false);
     const [currentSectionHoverIndex, setCurrentSectionHoverIndex] = useState(-1);
 
-    useEffect(() => {
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {        
         fetch(API_URL + 'sections', {
             method: 'GET',
             headers: {
@@ -146,19 +148,34 @@ const Project = () => {
         })
             .then(res => res.json())
             .then(res => setData(res['results']));
-    }, [])
+    }, [refresh])
+
+    const handleEditableInputLeave = (e, section) => {
+        if(e.target.value !== section.name) {
+            fetch(API_URL + 'sections/'+ section.id, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }, 
+                body: JSON.stringify({ name : e.target.value, description : section.description, color : section.color, created_at : section.created_at, updated_at : section.updated_at })
+            })
+                .then(res => res.json())
+                .then(res => setRefresh(!refresh));
+        }
+    }
 
     return (
         <Container>
             <SectionContainer>
                 {data.map((section, index) => {
                         return (
-                            <Section key={index}>
+                            <Section key={section.id}>
                                 <SectionHeader backgroundColor={section.color} onMouseEnter={() => { setShowCaret(true); setCurrentSectionHoverIndex(index); }} onMouseLeave={() => { setShowCaret(false); setCurrentSectionHoverIndex(-1); }}>
                                     <div class="name">
                                         <Editable defaultValue={section.name}>
                                             <EditablePreview />
-                                            <EditableInput />
+                                            <EditableInput bgColor="#FFFFFF" onBlur={(e) => handleEditableInputLeave(e, section)} />
                                         </Editable>
                                     </div>
                                     <div class="caret-task-count-container">
@@ -170,10 +187,11 @@ const Project = () => {
                                         </div>
                                     </div>
                                 </SectionHeader>
+                                
                                 <SectionBody>
                                     {section.task_set.map((task, index) => {
                                             return (
-                                                <Task key={index}>
+                                                <Task key={task.id}>
                                                     <TaskHeader>{task.name}</TaskHeader>
                                                     <TaskBodyPreview>{task.description != "" && task.description}</TaskBodyPreview>
                                                     <TaskCheckListCount></TaskCheckListCount>
@@ -187,6 +205,7 @@ const Project = () => {
                                         <div class="background"></div>
                                     </AddTaskIconContainer>
                                 </SectionBody>
+                               
                             </Section>
                         )
                     })
