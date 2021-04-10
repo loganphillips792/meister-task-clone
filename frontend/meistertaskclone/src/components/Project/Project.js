@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { CaretDownFill } from '@styled-icons/bootstrap/CaretDownFill'
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/react"
 import { AddCircle } from '@styled-icons/fluentui-system-filled/AddCircle';
+import { Add } from '@styled-icons/fluentui-system-filled/Add';
 
 const Container = styled.div`
     background: linear-gradient(-45deg, rgb(245, 247, 248), rgb(237, 241, 242) 100%);
@@ -71,6 +72,8 @@ const SectionHeader = styled.div`
 const SectionBody = styled.div`
     padding: 10px 10px 40px;
 `;
+
+const AddSectionIcon = styled(Add)``;
 
 const CaretDownIcon = styled(CaretDownFill)`
     color: #FFFFFF;
@@ -139,6 +142,8 @@ const Project = () => {
 
     const [refresh, setRefresh] = useState(false);
 
+    const [tempSection, setTempSection] = useState(false);
+
     useEffect(() => {        
         fetch(API_URL + 'sections', {
             method: 'GET',
@@ -163,6 +168,10 @@ const Project = () => {
                 .then(res => res.json())
                 .then(res => setRefresh(!refresh));
         }
+    }
+
+    const handleAddNewSectionClick = () => {
+        setTempSection(true);
     }
 
     return (
@@ -210,6 +219,24 @@ const Project = () => {
                         )
                     })
                 }
+                {tempSection === true && (
+                        <Section>
+                            <SectionHeader backgroundColor='#FFD500'>
+                                <div class="name">
+                                    <Editable defaultValue="Type a section name...">
+                                        <EditablePreview />
+                                        <EditableInput bgColor="#FFFFFF" onBlur={(e) => handleEditableInputLeave(e)} />
+                                    </Editable>
+                                </div>
+                            </SectionHeader>
+
+                            <SectionBody>
+
+                            </SectionBody>
+                        </Section>
+                    )
+                }
+                <AddSectionIcon size="16px" onClick={handleAddNewSectionClick}/>
             </SectionContainer>
         </Container>
     );
