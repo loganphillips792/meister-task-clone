@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { API_URL } from '../../constants.js';
 import { useParams } from 'react-router-dom';
 import { CaretDownFill } from '@styled-icons/bootstrap/CaretDownFill'
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/react"
 import { AddCircle } from '@styled-icons/fluentui-system-filled/AddCircle';
+import { Add } from '@styled-icons/fluentui-system-filled/Add';
 
 const Container = styled.div`
     background: linear-gradient(-45deg, rgb(245, 247, 248), rgb(237, 241, 242) 100%);
@@ -71,6 +72,8 @@ const SectionHeader = styled.div`
 const SectionBody = styled.div`
     padding: 10px 10px 40px;
 `;
+
+const AddSectionIcon = styled(Add)``;
 
 const CaretDownIcon = styled(CaretDownFill)`
     color: #FFFFFF;
@@ -139,6 +142,10 @@ const Project = () => {
 
     const [refresh, setRefresh] = useState(false);
 
+    const [tempSection, setTempSection] = useState(false);
+
+    const tempSectionInputRef = useRef();
+
     useEffect(() => {        
         fetch(API_URL + 'sections', {
             method: 'GET',
@@ -146,11 +153,40 @@ const Project = () => {
                 'Accept': 'application/json'
             }
         })
-            .then(res => res.json())
-            .then(res => setData(res['results']));
+        .then(res => res.json())
+        .then(res => setData(res['results']));
+
+        /*
+            "In React class components, the render method itself shouldn’t cause side effects. It would be too early — we typically want to perform our effects after React has updated the DOM"
+        */
+        if(tempSection) {
+            tempSectionInputRef.current.focus();
+        }
+
     }, [refresh])
 
-    const handleEditableInputLeave = (e, section) => {
+    const handleEditableInputLeave = (e, section, isTempSection=false) => {
+
+        // handle the case of creating a new section
+        if(isTempSection) {
+            if(e.target.value !== "") {
+               
+                fetch(API_URL + 'sections', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }, 
+                    body: JSON.stringify({ name : e.target.value })
+                })
+                .then(res => res.json())
+                .then(res => setRefresh(!refresh)); // trigger a refresh to get the newly created section
+            } 
+             // remove the temp section
+             setTempSection(false);
+            return;
+        }
+
         if(e.target.value !== section.name) {
             fetch(API_URL + 'sections/'+ section.id, {
                 method: 'PUT',
@@ -165,6 +201,12 @@ const Project = () => {
         }
     }
 
+    const handleAddNewSectionClick = () => {
+        setTempSection(true);
+        // Trigger refresh so we can set focus to the editable input in ComponentDidMount (well, not exactly ComponentDidMount, but basically)
+        setRefresh(!refresh);
+    }
+    
     return (
         <Container>
             <SectionContainer>
@@ -200,7 +242,7 @@ const Project = () => {
                                         })
                                     }
                                     <AddTaskIconContainer>
-                                        {/* We want a add icon after the  last task */}
+                                        {/* We want a add icon after the last task */}
                                         <AddTaskCircleIcon size="28px" />
                                         <div class="background"></div>
                                     </AddTaskIconContainer>
@@ -210,6 +252,22 @@ const Project = () => {
                         )
                     })
                 }
+                {tempSection === true && (
+                        <Section>
+                            <SectionHeader backgroundColor='#FFD500'>
+                                <div class="name">
+                                    <Editable>
+                                        <EditablePreview ref={tempSectionInputRef}/>
+                                        <EditableInput bgColor="#FFFFFF" onBlur={(e) => handleEditableInputLeave(e, null, true)} />
+                                    </Editable>
+                                </div>
+                            </SectionHeader>
+
+                            <SectionBody></SectionBody>
+                        </Section>
+                    )
+                }
+                <AddSectionIcon size="16px" onClick={handleAddNewSectionClick}/>
             </SectionContainer>
         </Container>
     );

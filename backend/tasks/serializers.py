@@ -35,10 +35,10 @@ class TaskSerializer(serializers.Serializer):
 class SectionSerializer(serializers.Serializer):
     id = serializers.IntegerField(source="pk", read_only=True)
     name = serializers.CharField(max_length=30)
-    color = serializers.CharField(max_length=7)
-    description = serializers.CharField(max_length=300, allow_null=True)
-    created_at = serializers.DateTimeField()
-    updated_at = serializers.DateTimeField()
+    color = serializers.CharField(max_length=7, default='#FFD500')
+    description = serializers.CharField(max_length=300, required=False, allow_null=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
     task_set = TaskSerializer(read_only=True, many=True)
 
     def validate_color(self, value):
