@@ -1,0 +1,13 @@
+// Next 3 lines are used by Postgres container to create a user, password and database
+POSTGRES_USER=postgresuser
+POSTGRES_PASSWORD=password1234
+POSTGRES_DB=maindatabase
+// Set this to 'True' for development
+DEBUG_MODE=True
+DATABASE_ENGINE=django.db.backends.postgresql_psycopg2
+// Next 3 lines should match the 3 POSTGRES variables at the top of the file
+DATABASE_USER=postgresuser
+DATABASE_PASSWORD=password1234
+DATABASE_NAME=maindatabase
+DATABASE_HOST=db
+DATABASE_PORT=5432
