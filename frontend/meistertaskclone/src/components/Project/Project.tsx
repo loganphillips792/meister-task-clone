@@ -33,7 +33,15 @@ const Section = styled.div`
     }
 `;
 
-const SectionHeader = styled.div`
+interface SectionHeaderProps {
+    backgroundColor: string,
+    // onMouseEnter: React.MouseEventHandler<HTMLDivElement>,
+    // setCurrentSectionHoverIndex: ,
+    // onMouseLeave: React.MouseEventHandler<HTMLDivElement>, 
+    // setShowCaret: , 
+}
+
+const SectionHeader = styled.div<SectionHeaderProps>`
     height: 60px;
     display: flex;
     align-items: center;
@@ -75,7 +83,13 @@ const SectionBody = styled.div`
 
 const AddSectionIcon = styled(Add)``;
 
-const CaretDownIcon = styled(CaretDownFill)`
+interface CaretDownIconInterface {
+    show: boolean,
+    index: number,
+    currentSectionHoverIndex: number
+}
+
+const CaretDownIcon = styled(CaretDownFill)<CaretDownIconInterface>`
     color: #FFFFFF;
     opacity: ${({show, index, currentSectionHoverIndex}) => show && (index==currentSectionHoverIndex) ? '1' : '0' };
     cursor: pointer;
@@ -133,10 +147,38 @@ const AddTaskCircleIcon = styled(AddCircle)`
     z-index: 2;
 `;
 
-const Project = () => {
-    let { slug } = useParams();
+interface SectionInterface {
+    id: string,
+    name: string,
+    description: string,
+    color: string,
+    created_at: string,
+    updated_at: string,
+    task_set: Array<TaskInterface>
+}
 
-    const [data, setData] = useState([]);
+interface TaskInterface {
+    id: string,
+    name: string,
+    description: string,
+    section_id: string,
+    due: string,
+    created_at: string,
+    updated_at: string,
+    completed_at: string,
+    assigned_to_id: string 
+}
+
+const Project: React.FC = () => {
+    let { slug } = useParams<{slug: string}>();
+
+    //const [data, setData] = useState([]);
+    const [data, setData] = useState<
+        Array<
+            SectionInterface
+        >    
+    >([]);
+
     const [showCaret, setShowCaret] = useState(false);
     const [currentSectionHoverIndex, setCurrentSectionHoverIndex] = useState(-1);
 
@@ -144,7 +186,7 @@ const Project = () => {
 
     const [tempSection, setTempSection] = useState(false);
 
-    const tempSectionInputRef = useRef();
+    const tempSectionInputRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {        
         fetch(API_URL + 'sections', {
@@ -160,12 +202,12 @@ const Project = () => {
             "In React class components, the render method itself shouldn’t cause side effects. It would be too early — we typically want to perform our effects after React has updated the DOM"
         */
         if(tempSection) {
-            tempSectionInputRef.current.focus();
+            tempSectionInputRef?.current?.focus();
         }
 
     }, [refresh])
 
-    const handleEditableInputLeave = (e, section, isTempSection=false) => {
+    const handleEditableInputLeave = (e: React.FocusEvent<HTMLInputElement>, section: SectionInterface | null, isTempSection=false) => {
 
         // handle the case of creating a new section
         if(isTempSection) {
@@ -187,17 +229,19 @@ const Project = () => {
             return;
         }
 
-        if(e.target.value !== section.name) {
-            fetch(API_URL + 'sections/'+ section.id, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }, 
-                body: JSON.stringify({ name : e.target.value, description : section.description, color : section.color, created_at : section.created_at, updated_at : section.updated_at })
-            })
-                .then(res => res.json())
-                .then(res => setRefresh(!refresh));
+        if(section != null) {
+            if(e.target.value !== section.name) {
+                fetch(API_URL + 'sections/'+ section.id, {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }, 
+                    body: JSON.stringify({ name : e.target.value, description : section.description, color : section.color, created_at : section.created_at, updated_at : section.updated_at })
+                })
+                    .then(res => res.json())
+                    .then(res => setRefresh(!refresh));
+            }
         }
     }
 
@@ -214,17 +258,17 @@ const Project = () => {
                         return (
                             <Section key={section.id}>
                                 <SectionHeader backgroundColor={section.color} onMouseEnter={() => { setShowCaret(true); setCurrentSectionHoverIndex(index); }} onMouseLeave={() => { setShowCaret(false); setCurrentSectionHoverIndex(-1); }}>
-                                    <div class="name">
+                                    <div className="name">
                                         <Editable defaultValue={section.name}>
                                             <EditablePreview />
                                             <EditableInput bgColor="#FFFFFF" onBlur={(e) => handleEditableInputLeave(e, section)} />
                                         </Editable>
                                     </div>
-                                    <div class="caret-task-count-container">
+                                    <div className="caret-task-count-container">
                                         
                                         <CaretDownIcon size="15px" index={index} currentSectionHoverIndex={currentSectionHoverIndex} show={showCaret} />
                                         
-                                        <div class="task-count">
+                                        <div className="task-count">
                                             <div>{section.task_set.length}</div>
                                         </div>
                                     </div>
@@ -244,7 +288,7 @@ const Project = () => {
                                     <AddTaskIconContainer>
                                         {/* We want a add icon after the last task */}
                                         <AddTaskCircleIcon size="28px" />
-                                        <div class="background"></div>
+                                        <div className="background"></div>
                                     </AddTaskIconContainer>
                                 </SectionBody>
                                
@@ -255,7 +299,7 @@ const Project = () => {
                 {tempSection === true && (
                         <Section>
                             <SectionHeader backgroundColor='#FFD500'>
-                                <div class="name">
+                                <div className="name">
                                     <Editable>
                                         <EditablePreview ref={tempSectionInputRef}/>
                                         <EditableInput bgColor="#FFFFFF" onBlur={(e) => handleEditableInputLeave(e, null, true)} />
