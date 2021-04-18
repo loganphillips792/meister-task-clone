@@ -2,7 +2,7 @@
 
 ## To build and run application
 
-1. Create a file called *.env* at *backend/config/nginx/*. Copy the contents of .env-example, and put it into .env. You can change the values as necessary.
+1. Create a file called *.env* at *backend/config/nginx/*. Copy the contents of env-example, and put it into .env. You can change the values as necessary.
 2. *docker-compose build* - Build docker images
 3. *docker-compose up* - Create and run the containers
 4. *docker-compose run django python3 manage.py makemigrations* - Make Django database migration files
