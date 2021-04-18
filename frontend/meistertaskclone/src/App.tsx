@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import Home from './components/Home/index';
-import Project from './components/Project/Project.js';
-import Toolbar from './components/Project/Toolbar.js';
-import Dashboard from './components/Dashboard/Dashboard.js';
+import Project from './components/Project/Project';
+import Toolbar from './components/Project/Toolbar';
+import Dashboard from './components/Dashboard/Dashboard';
 
 import {
   BrowserRouter as Router,

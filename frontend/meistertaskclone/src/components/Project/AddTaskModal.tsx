@@ -4,7 +4,7 @@ import { Text, Input } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react"
 import { CloseOutline } from '@styled-icons/evaicons-outline/CloseOutline';
 
-const Container = styled.div`
+const Container = styled.div<{show: boolean}>`
     display: ${(props) => props.show ? 'block' : 'none' };
     position: fixed;
     left: 0;
@@ -35,15 +35,20 @@ const CloseIcon = styled(CloseOutline)`
     cursor: pointer;
 `;
 
-const AddTaskModal = ({ show, closeProjectDropdown }) => {
+interface Props {
+    show: boolean,
+    closeProjectDropdown: React.MouseEventHandler<SVGSVGElement>
+}
+
+const AddTaskModal: React.FC<Props> = ({ show, closeProjectDropdown }) => {
     const [value, setValue] = useState("");
 
-    const handleChange = (event) => setValue(event.target.value);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.currentTarget.value);
 
     return (
         <Container show={show}>
             <StyledAddTaskModal>
-                <div class="header-close-container">
+                <div className="header-close-container">
                     <Text fontSize="xl">Add Task</Text>
                     <CloseIcon size="15px" onClick={closeProjectDropdown} />
                 </div>

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Rocket from '../../images/rocket.png';
-import ProjectPopover from './ProjectPopover.js';
+import ProjectPopover from './ProjectPopover';
 import { Home } from '@styled-icons/heroicons-outline/Home';
 import { InfoCircle } from '@styled-icons/bootstrap/InfoCircle';
 import { PlusCircle } from '@styled-icons/bootstrap/PlusCircle';
@@ -104,8 +104,10 @@ const NameCircle = styled.p`
     background-color: rgb(138, 148, 153);
 `;
 
-const Toolbar = () => {
-    const [referenceElement, setReferenceElement] = useState(null);
+const Toolbar: React.FC = () => {
+    //const [referenceElement, setReferenceElement] = useState(null);
+    // https://davidcosta.com.br/en/using-popper-as-tooltip-typeScript-and-styled-component/
+    const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
 
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
 
@@ -119,8 +121,8 @@ const Toolbar = () => {
                 <HomeIcon size={iconsSize} />
                 <VerticalLine />
                 <ProjectPicker ref={setReferenceElement} onClick={() => setShowProjectDropdown(!showProjectDropdown)}>
-                    <div class="project-image"></div>
-                    <div class="project-name">VRware Webapp Development Team</div>
+                    <div className="project-image"></div>
+                    <div className="project-name">VRware Webapp Development Team</div>
                 </ProjectPicker>
                <VerticalLine />
                <ProjectPopover

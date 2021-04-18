@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { API_URL } from '../../constants.js';
 
@@ -6,7 +6,7 @@ const Container = styled.div`
 
 `;
 
-const Home = () => {
+const Home: React.FC = () => {
 
     const [testResponseData, setTestResponseData] = useState('');
 
