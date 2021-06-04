@@ -40,7 +40,7 @@ interface Props {
     closeProjectDropdown: React.MouseEventHandler<SVGSVGElement>
 }
 
-const AddTaskModal: React.FC<Props> = ({ show, closeProjectDropdown }) => {
+const AddTaskModal = ({ show, closeProjectDropdown }: Props) => {
     const [value, setValue] = useState("");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.currentTarget.value);

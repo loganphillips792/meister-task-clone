@@ -6,6 +6,7 @@ import { CaretDownFill } from '@styled-icons/bootstrap/CaretDownFill'
 import { Editable, EditableInput, EditablePreview } from "@chakra-ui/react"
 import { AddCircle } from '@styled-icons/fluentui-system-filled/AddCircle';
 import { Add } from '@styled-icons/fluentui-system-filled/Add';
+import EditSectionDetailsPopover from './EditSectionDetailsPopover';
 
 const Container = styled.div`
     background: linear-gradient(-45deg, rgb(245, 247, 248), rgb(237, 241, 242) 100%);
@@ -86,7 +87,9 @@ const AddSectionIcon = styled(Add)``;
 interface CaretDownIconInterface {
     show: boolean,
     index: number,
-    currentSectionHoverIndex: number
+    currentSectionHoverIndex: number,
+    ref: any
+    //ref: React.Ref<SVGSVGElement>
 }
 
 const CaretDownIcon = styled(CaretDownFill)<CaretDownIconInterface>`
@@ -169,7 +172,7 @@ interface TaskInterface {
     assigned_to_id: string 
 }
 
-const Project: React.FC = () => {
+const Project = () => {
     let { slug } = useParams<{slug: string}>();
 
     //const [data, setData] = useState([]);
@@ -188,6 +191,10 @@ const Project: React.FC = () => {
 
     const tempSectionInputRef = useRef<HTMLSpanElement>(null);
 
+    const [referenceElement, setReferenceElement] = useState(null);
+
+    const [showEditSectionDetailsPopover, setShowEditSectionDetailsPopover] = useState<boolean>(false);
+    
     useEffect(() => {        
         fetch(API_URL + 'sections', {
             method: 'GET',
@@ -266,7 +273,7 @@ const Project: React.FC = () => {
                                     </div>
                                     <div className="caret-task-count-container">
                                         
-                                        <CaretDownIcon size="15px" index={index} currentSectionHoverIndex={currentSectionHoverIndex} show={showCaret} />
+                                        <CaretDownIcon size="15px" index={index} currentSectionHoverIndex={currentSectionHoverIndex} show={showCaret} onClick={() => setShowEditSectionDetailsPopover(true)} ref={setReferenceElement} />
                                         
                                         <div className="task-count">
                                             <div>{section.task_set.length}</div>
@@ -291,7 +298,7 @@ const Project: React.FC = () => {
                                         <div className="background"></div>
                                     </AddTaskIconContainer>
                                 </SectionBody>
-                               
+                                <EditSectionDetailsPopover referenceElement={referenceElement} show={showEditSectionDetailsPopover} />
                             </Section>
                         )
                     })

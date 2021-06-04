@@ -66,7 +66,7 @@ const ProjectPopover: React.FC<ProjectPopoverProps> = ({ referenceElement, showP
         <Container ref={setPopperElement} style={styles.popper} {...attributes.popper}>
             <AnimatePresence>
                 {showProjectDropdown && (
-                    <StyledProjectPopover key="modal" animate={{ scale: [0, 1] }} exit={{ scale: 0 }} transition={{ duration: 0.5 }}>
+                    <StyledProjectPopover key="modal" animate={{ opacity: [0, 1] }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
                         <ProjectDropdown>
                             <div className="header-close-container">
                                 <Text fontSize="xl">Projects</Text>

@@ -39,19 +39,32 @@ const VerticalLine = styled.div`
     background-color: rgb(220, 226, 230);
 `;
 
+const ProjectImage = styled.div`
+    background: url(${Rocket});
+    background-size: 24px;
+    width: 24px;
+    height: 24px;
+`;
+
 const ProjectPicker = styled.div`
     display: flex;
     margin-left: 16px;
     margin-right: 16px;
+    
+    &:active { 
+        .project-name {
+            color: rgba(61, 71, 77, 0.5);
+        }
 
-    .project-image {
-        background: url(${Rocket});
-        background-size: 24px;
-        width: 24px;
-        height: 24px;
+        & ${ProjectImage} {
+            opacity: 0.5;
+        }
     }
 
-    .project-name {}
+    .project-name {
+        font-size: 17px;
+        font-weight: 500;
+    }
 `;
 
 const IconMargins = css`
@@ -107,6 +120,7 @@ const NameCircle = styled.p`
 const Toolbar: React.FC = () => {
     //const [referenceElement, setReferenceElement] = useState(null);
     // https://davidcosta.com.br/en/using-popper-as-tooltip-typeScript-and-styled-component/
+    // https://popper.js.org/react-popper/v2/
     const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
 
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
@@ -120,8 +134,9 @@ const Toolbar: React.FC = () => {
             <ColumnOne>
                 <HomeIcon size={iconsSize} />
                 <VerticalLine />
-                <ProjectPicker ref={setReferenceElement} onClick={() => setShowProjectDropdown(!showProjectDropdown)}>
-                    <div className="project-image"></div>
+                <ProjectPicker ref={setReferenceElement} onMouseUp={() => setShowProjectDropdown(!showProjectDropdown)}>
+                    {/* <div className="project-image"></div> */}
+                    <ProjectImage />
                     <div className="project-name">VRware Webapp Development Team</div>
                 </ProjectPicker>
                <VerticalLine />
