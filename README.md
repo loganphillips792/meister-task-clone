@@ -11,3 +11,33 @@
 7. *python manage.py shell < scripts/fill_database.py* - Run script which fills database with random data
 
 **Note**: If you want hot reloading enabled for React, then you need to run *npm install* as the first step. You also want to make sure you have the following lines uncommented in the docker-compose.yml file: stdin_open, environments, and volumes.
+
+## Architecture 
+
+Section table
+	- These are the vertical columns
+
+	- Fields
+		- id
+		- name (can be null)
+		- color
+		- Limit (can be null)
+		- project_id
+		- sequence (this is the order in which they show on the screen)
+		- description (can be null)
+
+
+
+Tasks table
+	
+	- Fields
+		- id
+		- due 
+		- name
+		- notes
+		- updated_at
+		- created_at
+		- section_id
+		- completedAt
+		- assigned_to_id
+		- status_changed_By_id
