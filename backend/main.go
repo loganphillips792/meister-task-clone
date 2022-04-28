@@ -1,13 +1,14 @@
 package main
 
 import (
-	"cors"
 	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
 	"time"
-	"zap"
+
+	"github.com/rs/cors"
+	"go.uber.org/zap"
 )
 
 type Handler struct {
