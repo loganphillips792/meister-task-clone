@@ -9,7 +9,7 @@ on:
   # can remove this because we have a status check as a branch protection rule which requires PR to have a successful build
   # pull_request:
 jobs:
-  test_backend:
+  Test_Backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -57,8 +57,8 @@ jobs:
                   echo "Failed"
                   exit 1
               fi
-  test_frontend:
+  Test_Frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Run frontend flow
-      - run: echo "FRONTEND RUNNING"
+        run: echo "FRONTEND RUNNING"
