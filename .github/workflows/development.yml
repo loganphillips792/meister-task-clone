@@ -9,7 +9,7 @@ on:
   # can remove this because we have a status check as a branch protection rule which requires PR to have a successful build
   # pull_request:
 jobs:
-  test backend:
+  test_backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
