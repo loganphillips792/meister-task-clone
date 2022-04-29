@@ -36,7 +36,7 @@ jobs:
         run: go test -v -coverprofile coverage.out ./...
       # - name: List directories
       #   run: ls
-        working-directory: backend 
+      # working-directory: backend 
       - name: Quality Gate - Test coverage shall be above threshold
         env:
             TESTCOVERAGE_THRESHOLD: 30
