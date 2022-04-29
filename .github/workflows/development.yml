@@ -4,7 +4,7 @@ on:
     branches-ignore:
       - main
 jobs:
-  Run golang tests:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
