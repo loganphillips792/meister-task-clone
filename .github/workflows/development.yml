@@ -57,3 +57,8 @@ jobs:
                   echo "Failed"
                   exit 1
               fi
+  test_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run frontend flow
+      - run: echo "FRONTEND RUNNING"
