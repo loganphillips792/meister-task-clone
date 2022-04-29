@@ -33,9 +33,9 @@ jobs:
         run: go test -v ./...
       - name: Test code coverage
         working-directory: backend
-        run: go test -v -coverprofile cover.out ./...
-      - name: List directories
-        run: ls
+        run: go test -v -coverprofile coverage.out ./...
+      # - name: List directories
+      #   run: ls
         working-directory: backend 
       - name: Quality Gate - Test coverage shall be above threshold
         env:
