@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"go.uber.org/zap"
 )
@@ -16,26 +18,30 @@ type Handler struct {
 	//dbConn *sql.DB
 }
 
+type RandomString struct {
+	RandString string
+}
+
 func main() {
 	fmt.Println("Hello world")
-
-	mux := http.NewServeMux()
 
 	logger, _ := zap.NewProduction()
 	defer logger.Sync() // flushes buffer, if any
 	sugar := logger.Sugar()
 
+	r := mux.NewRouter()
+
 	envHandler := &Handler{logger: sugar}
 	//envHandler := &Handler{logger: sugar, dbConn: db}
 
-	// c := cors.New(cors.Options{
-	// 	AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
-	// })
+	r.HandleFunc("/hello", envHandler.HelloWorld).Methods("GET")
+	r.HandleFunc("/random", envHandler.GetRandomString).Methods("GET")
 
-	mux.HandleFunc("/hello", envHandler.HelloWorld)
-	mux.HandleFunc("/random", envHandler.GetRandomString)
+	c := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+	})
 
-	handler := cors.Default().Handler(mux)
+	handler := c.Handler(r)
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }
@@ -46,11 +52,12 @@ func (handler *Handler) HelloWorld(w http.ResponseWriter, req *http.Request) {
 }
 
 func (handler *Handler) GetRandomString(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 
-	data := fmt.Sprintf("{response:%s}", randStringRunes(10))
-	w.Write([]byte(data))
-	//w.Write([]byte(`{"status":"OK"}`))
+	json.NewEncoder(w).Encode(RandomString{
+		RandString: randStringRunes(10),
+	})
+
+	w.Header().Set("Content-Type", "application/json")
 }
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

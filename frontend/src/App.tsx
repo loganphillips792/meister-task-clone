@@ -16,14 +16,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [data, setData] = useState();
+  const [data, setData] = useState<String>();
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/random")
         .then(response => response.json())
         .then(data => {
-            console.log("DATA", data)
-            setData(data);
+            setData(data['RandString']);
         })
 }, [])
 
