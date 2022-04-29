@@ -9,7 +9,7 @@ on:
   # can remove this because we have a status check as a branch protection rule which requires PR to have a successful build
   # pull_request:
 jobs:
-  build:
+  Test_Backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,8 +18,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
-      # - name: Build code
-      #   run: go build -v ./...
       - name: Lint
         working-directory: backend
         run: |
@@ -36,14 +34,8 @@ jobs:
       - name: Test code
         working-directory: backend
         run: |
-          go test -v ./...
+          go test -v -coverprofile coverage.out ./...
           go tool cover -func coverage.out
-      - name: Test code coverage
-        working-directory: backend
-        run: go test -v -coverprofile coverage.out ./...
-      # - name: List directories
-      #   run: ls
-      # working-directory: backend 
       - name: Quality Gate - Test coverage shall be above threshold
         env:
             TESTCOVERAGE_THRESHOLD: 30
@@ -60,3 +52,8 @@ jobs:
                   echo "Failed"
                   exit 1
               fi
+  Test_Frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run frontend flow
+        run: echo "FRONTEND RUNNING"
