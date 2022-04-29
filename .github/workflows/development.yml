@@ -3,6 +3,8 @@ on:
   push:
     branches-ignore:
       - main
+  # can remove this because we have a status check as a branch protection rule which requires PR to have a successful build
+  # pull_request:
 jobs:
   build:
     runs-on: ubuntu-latest
