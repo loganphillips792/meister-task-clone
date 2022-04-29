@@ -7,4 +7,4 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: RUNNING ON FEATURE BRANCH."
+      - run: "RUNNING ON FEATURE BRANCH."
