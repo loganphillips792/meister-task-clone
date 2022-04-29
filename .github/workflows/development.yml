@@ -16,6 +16,7 @@ jobs:
       # - name: Build code
       #   run: go build -v ./...
       - name: Lint
+        working-directory: backend
         run: |
           # binary will be $(go env GOPATH)/bin/golangci-lint
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.45.2
@@ -24,8 +25,10 @@ jobs:
       #- name: List directories
       #  run: ls
       - name: Test code
+        working-directory: backend
         run: go test -v ./...
-        working-directory: backend
+        
       - name: Test code coverage
-        run: go test -v -coverprofile cover.out ./...
         working-directory: backend
+        run: go test -v -coverprofile cover.out ./...
+       
