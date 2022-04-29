@@ -32,7 +32,9 @@ jobs:
       #  run: ls
       - name: Test code
         working-directory: backend
-        run: go test -v ./...
+        run: |
+          go test -v ./...
+          go tool cover -func coverage.out
       - name: Test code coverage
         working-directory: backend
         run: go test -v -coverprofile coverage.out ./...
