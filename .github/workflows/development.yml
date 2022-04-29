@@ -18,6 +18,6 @@ jobs:
       - name: List directories
         run: ls
       - name: Go to backend folder
-        name: cd backend
+        run: cd backend
       - name: Test code
         run: go test -v ./...
