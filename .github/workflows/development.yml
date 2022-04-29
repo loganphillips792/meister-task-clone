@@ -36,11 +36,8 @@ jobs:
       - name: Test code
         working-directory: backend
         run: |
-          go test -v -coverprofile cover.out ./...
+          go test -v -coverprofile coverage.out ./...
           go tool cover -func coverage.out
-      - name: Test code coverage
-        working-directory: backend
-        run: go test -v -coverprofile coverage.out ./...
       # - name: List directories
       #   run: ls
       # working-directory: backend 
