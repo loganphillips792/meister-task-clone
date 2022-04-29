@@ -3,8 +3,54 @@ on:
   push:
     branches-ignore:
       - main
+  pull_request:
 jobs:
-  Explore-GitHub-Actions:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: RUNNING ON FEATURE BRANCH."
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Go environment
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+      # - name: Build code
+      #   run: go build -v ./...
+      - name: Lint
+        working-directory: backend
+        run: |
+          # binary will be $(go env GOPATH)/bin/golangci-lint
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.45.2
+          golangci-lint --version
+          golangci-lint run ./...
+      - name: Vet
+        working-directory: backend
+        run: |
+          go vet ./...
+      #- name: List directories
+      #  run: ls
+      - name: Test code
+        working-directory: backend
+        run: go test -v ./...
+      - name: Test code coverage
+        working-directory: backend
+        run: go test -v -coverprofile coverage.out ./...
+      # - name: List directories
+      #   run: ls
+      # working-directory: backend 
+      - name: Quality Gate - Test coverage shall be above threshold
+        env:
+            TESTCOVERAGE_THRESHOLD: 30
+        working-directory: backend 
+        run: |
+              echo "Quality Gate: checking test coverage is above threshold ..."
+              echo "Threshold             : $TESTCOVERAGE_THRESHOLD %"
+              totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
+              echo "Current test coverage : $totalCoverage %"
+              if (( $(echo "$totalCoverage $TESTCOVERAGE_THRESHOLD" | awk '{print ($1 > $2)}') )); then
+                  echo "OK"
+              else
+                  echo "Current test coverage is below threshold. Please add more unit tests or adjust threshold to a lower value."
+                  echo "Failed"
+                  exit 1
+              fi

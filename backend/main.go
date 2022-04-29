@@ -26,7 +26,14 @@ func main() {
 	fmt.Println("Hello world")
 
 	logger, _ := zap.NewProduction()
-	defer logger.Sync() // flushes buffer, if any
+
+	//logger.Sync() // flushes buffer, if any
+	err := logger.Sync() // flushes buffer, if any
+	// for linting
+	if err != nil {
+		log.Fatal("Error when encoding json")
+	}
+
 	sugar := logger.Sugar()
 
 	r := mux.NewRouter()
@@ -48,14 +55,24 @@ func main() {
 
 func (handler *Handler) HelloWorld(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Write([]byte(`{"status":"OK"}`))
+	_, err := w.Write([]byte(`{"status":"OK"}`))
+
+	// for linting
+	if err != nil {
+		handler.logger.Fatalf("Error when writing")
+	}
 }
 
 func (handler *Handler) GetRandomString(w http.ResponseWriter, req *http.Request) {
 
-	json.NewEncoder(w).Encode(RandomString{
+	err := json.NewEncoder(w).Encode(RandomString{
 		RandString: randStringRunes(10),
 	})
+
+	// for linting
+	if err != nil {
+		handler.logger.Fatalf("Error when encoding json")
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 }
