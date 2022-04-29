@@ -15,5 +15,7 @@ jobs:
           go-version: 1.18
       # - name: Build code
       #   run: go build -v ./...
+      - name: List directories
+        run: ls
       - name: Test code
         run: go test -v ./...
