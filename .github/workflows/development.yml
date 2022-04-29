@@ -18,8 +18,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
-      # - name: Build code
-      #   run: go build -v ./...
       - name: Lint
         working-directory: backend
         run: |
@@ -38,9 +36,6 @@ jobs:
         run: |
           go test -v -coverprofile coverage.out ./...
           go tool cover -func coverage.out
-      # - name: List directories
-      #   run: ls
-      # working-directory: backend 
       - name: Quality Gate - Test coverage shall be above threshold
         env:
             TESTCOVERAGE_THRESHOLD: 30
