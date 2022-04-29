@@ -19,6 +19,8 @@ type Handler struct {
 func main() {
 	fmt.Println("Hello world")
 
+	mux := http.NewServeMux()
+
 	logger, _ := zap.NewProduction()
 	defer logger.Sync() // flushes buffer, if any
 	sugar := logger.Sugar()
@@ -26,14 +28,14 @@ func main() {
 	envHandler := &Handler{logger: sugar}
 	//envHandler := &Handler{logger: sugar, dbConn: db}
 
-	c := cors.New(cors.Options{
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
-	})
+	// c := cors.New(cors.Options{
+	// 	AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+	// })
 
-	http.HandleFunc("/hello", envHandler.HelloWorld)
-	http.HandleFunc("/random", envHandler.GetRandomString)
+	mux.HandleFunc("/hello", envHandler.HelloWorld)
+	mux.HandleFunc("/random", envHandler.GetRandomString)
 
-	handler := c.Handler()
+	handler := cors.Default().Handler(mux)
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }
