@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -23,16 +22,9 @@ type RandomString struct {
 }
 
 func main() {
-	fmt.Println("Hello world")
-
 	logger, _ := zap.NewProduction()
 
-	//logger.Sync() // flushes buffer, if any
-	err := logger.Sync() // flushes buffer, if any
-	// for linting
-	if err != nil {
-		log.Fatal("Error when encoding json")
-	}
+	logger.Sync() // flushes buffer, if any
 
 	sugar := logger.Sugar()
 
@@ -64,6 +56,7 @@ func (handler *Handler) HelloWorld(w http.ResponseWriter, req *http.Request) {
 }
 
 func (handler *Handler) GetRandomString(w http.ResponseWriter, req *http.Request) {
+	handler.logger.Infow("Getting random string")
 
 	err := json.NewEncoder(w).Encode(RandomString{
 		RandString: randStringRunes(10),
