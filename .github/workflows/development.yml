@@ -52,6 +52,12 @@ jobs:
                   echo "Failed"
                   exit 1
               fi
+  
+  Build & Push Docker image for backend:
+    steps:
+        - name: Build Docker image
+          run: echo "building"
+
   Test_Frontend:
     runs-on: ubuntu-latest
     steps:
