@@ -1,48 +1,28 @@
-package main
+package meistertask
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 	"go.uber.org/zap"
 )
+
+type RandomString struct {
+	RandString string
+}
 
 type Handler struct {
 	logger *zap.SugaredLogger
 	//dbConn *sql.DB
 }
 
-type RandomString struct {
-	RandString string
-}
-
-func main() {
-	logger, _ := zap.NewProduction()
-
-	logger.Sync() // flushes buffer, if any
-
-	sugar := logger.Sugar()
-
-	r := mux.NewRouter()
-
-	envHandler := &Handler{logger: sugar}
-	//envHandler := &Handler{logger: sugar, dbConn: db}
-
-	r.HandleFunc("/hello", envHandler.HelloWorld).Methods("GET")
-	r.HandleFunc("/random", envHandler.GetRandomString).Methods("GET")
-
-	c := cors.New(cors.Options{
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
-	})
-
-	handler := c.Handler(r)
-
-	log.Fatal(http.ListenAndServe(":8000", handler))
+func BuildHandler(log *zap.SugaredLogger) *Handler {
+	return &Handler{
+		logger: log,
+	}
 }
 
 func (handler *Handler) HelloWorld(w http.ResponseWriter, req *http.Request) {
@@ -79,4 +59,8 @@ func randStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+func PrintHelloWorld() {
+	fmt.Println("Hello world!")
 }
