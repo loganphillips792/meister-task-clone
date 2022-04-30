@@ -13,7 +13,10 @@ import (
 func main() {
 	logger, _ := zap.NewProduction()
 
-	logger.Sync() // flushes buffer, if any
+	// to fix linting error
+	defer func() {
+		_ = logger.Sync() // flushes buffer, if any
+	}()
 
 	sugar := logger.Sugar()
 
