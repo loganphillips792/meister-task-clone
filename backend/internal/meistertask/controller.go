@@ -2,7 +2,6 @@ package meistertask
 
 import (
 	"encoding/json"
-	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -59,8 +58,4 @@ func randStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
-}
-
-func PrintHelloWorld() {
-	fmt.Println("Hello world!")
 }

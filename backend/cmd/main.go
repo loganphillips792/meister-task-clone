@@ -19,19 +19,16 @@ func main() {
 
 	r := mux.NewRouter()
 
-	//envHandler := &Handler{logger: sugar}
-
+	// dependency injection
 	envHandler := meistertask.BuildHandler(sugar)
 	//envHandler := &Handler{logger: sugar, dbConn: db}
-	meistertask.PrintHelloWorld()
+
 	r.HandleFunc("/hello", envHandler.HelloWorld).Methods("GET")
 	r.HandleFunc("/random", envHandler.GetRandomString).Methods("GET")
 
 	c := cors.New(cors.Options{
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 	})
-
-	//tempHandler := meistertask.BuildHandler(sugar)
 
 	handler := c.Handler(r)
 

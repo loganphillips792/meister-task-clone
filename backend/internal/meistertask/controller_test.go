@@ -1,4 +1,4 @@
-package main
+package meistertask
 
 import (
 	"net/http/httptest"
@@ -6,10 +6,17 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 func Router() *mux.Router {
-	envHandler := &Handler{logger: nil}
+	logger, _ := zap.NewProduction()
+
+	logger.Sync() // flushes buffer, if any
+
+	sugar := logger.Sugar()
+
+	envHandler := &Handler{logger: sugar}
 
 	router := mux.NewRouter()
 	router.HandleFunc("/random", envHandler.GetRandomString).Methods("GET")
