@@ -9,6 +9,8 @@ import (
 	"go.uber.org/zap"
 )
 
+// https://stackoverflow.com/questions/34435185/unit-testing-for-functions-that-use-gorilla-mux-url-parameters
+// https://stackoverflow.com/questions/42605649/golang-gorilla-mux-and-testing-where-to-store-routes
 func Router() *mux.Router {
 	logger, _ := zap.NewProduction()
 
