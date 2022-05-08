@@ -1,0 +1,5 @@
+development:
+    dialect: postgres
+    datasource: postgres://postgres:password@localhost:5432/meistertaskclone?sslmode=disable
+    dir: db/migrations
+    table: migrations

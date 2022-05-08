@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /meistertask.bin ./cmd/main.go
+RUN go build -o /meistertask.bin ./cmd/meistertaskclone/main.go
 
 EXPOSE 8000
 
