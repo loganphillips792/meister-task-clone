@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jackc/pgx/v4"
 	"go.uber.org/zap"
 )
 
@@ -15,12 +16,13 @@ type RandomString struct {
 
 type Handler struct {
 	logger *zap.SugaredLogger
-	//dbConn *sql.DB
+	dbConn *pgx.Conn
 }
 
-func BuildHandler(log *zap.SugaredLogger) *Handler {
+func BuildHandler(log *zap.SugaredLogger, conn *pgx.Conn) *Handler {
 	return &Handler{
 		logger: log,
+		dbConn: conn,
 	}
 }
 
